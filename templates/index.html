@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reang Translator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+   <h1>🌍 Reang Translator</h1>
+<p>Translate English ↔ Reang instantly</p>
+
+    <select id="direction">
+        <option value="en_to_re">English → Reang</option>
+        <option value="re_to_en">Reang → English</option>
+    </select>
+
+    <input type="text" id="word" placeholder="Enter word or sentence">
+
+    <button onclick="translateWord()">Translate</button>
+
+    <p id="result"></p>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
