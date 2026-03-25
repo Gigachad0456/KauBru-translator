@@ -5,4 +5,19 @@
   {"english": "good night", "reang": "hor kaham"},
   {"english": "sweet dream", "reang": "imang kaham"},
   {"english": "how are you?", "reang": "kaham de tong?"}
+
+  {"english": "i am fine", "reang": "kaham no ang"},
+  {"english": "thank you", "reang": "khachangha"},
+  {"english": "sorry", "reang": "khoma khe di"},
+  {"english": "please", "reang": "uainsouhye"},
+
+  {"english": "what is your name", "reang": "nini mmung kma?"},
+  {"english": "my name is", "reang": "aini mmung khe "},
+  {"english": "where are you going", "reang": "mtoi ou thang ny"},
+  {"english": "come here", "reang": "ro ou phai de"},
+  {"english": "wait", "reang": "tong gra di"},
+  {"english": "lets go", "reang": "thang na"},
+
+  {"english": "food", "reang": "mai"},
+  {"english": "water", "reang": "toi"}
 ]
