@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Reang Translator — Admin Dashboard" />
+  <title>Admin Dashboard — Reang Translator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="dashboard">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+
+    <div class="sidebar-logo">
+      <div class="logo-icon">🌏</div>
+      <div class="logo-text">
+        Reang
+        <span>Admin Panel</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <ul>
+        <li class="active" id="nav-dashboard" onclick="showView('dashboard')">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          Dashboard
+        </li>
+        <li id="nav-words" onclick="showView('words')">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+          Dictionary
+        </li>
+        <li id="nav-analytics" onclick="showView('analytics')">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          Analytics
+        </li>
+      </ul>
+
+      <div class="nav-section-label">App</div>
+      <ul>
+        <li onclick="window.location='/'">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          Translator
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar">A</div>
+        <div class="user-info">
+          <div class="user-name">Admin</div>
+          <div class="user-role">Super Admin</div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1 id="topbar-title">Dashboard</h1>
+        <p id="topbar-sub">Overview of your translation data</p>
+      </div>
+      <div class="topbar-right">
+        <span class="topbar-badge">
+          <span class="dot"></span>
+          Live
+        </span>
+      </div>
+    </div>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <div class="content">
+
+      <!-- =========== VIEW: DASHBOARD =========== -->
+      <div id="view-dashboard">
+
+        <!-- Stats Row -->
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-icon purple">📊</div>
+            <div class="stat-body">
+              <div class="stat-value" id="translations">—</div>
+              <div class="stat-label">Total Translations</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">📖</div>
+            <div class="stat-body">
+              <div class="stat-value" id="words">—</div>
+              <div class="stat-label">Dictionary Words</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue">⚡</div>
+            <div class="stat-body">
+              <div class="stat-value" id="today-count">—</div>
+              <div class="stat-label">Today</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <div class="card-title">Translation Activity</div>
+              <div class="card-subtitle">Last 7 days</div>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Lower Grid -->
+        <div class="lower-grid">
+
+          <!-- Add Word -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Add New Word</div>
+                <div class="card-subtitle">Expand the dictionary</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="english">English Word</label>
+              <input type="text" id="english" placeholder="e.g. mountain" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reang">Reang Translation</label>
+              <input type="text" id="reang" placeholder="e.g. ꤌꤟꤤꤘ" />
+            </div>
+            <button class="btn-primary" onclick="addWord()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add to Dictionary
+            </button>
+            <p id="status"></p>
+          </div>
+
+          <!-- Quick Stats placeholder -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Quick Tips</div>
+                <div class="card-subtitle">Using the admin panel</div>
+              </div>
+            </div>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:12px;">
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="font-size:16px;margin-top:1px;">📝</span>
+                <span style="font-size:13px;color:var(--text-secondary);line-height:1.5;">Go to <strong style="color:var(--text-primary)">Dictionary</strong> to browse, search, edit or delete words.</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="font-size:16px;margin-top:1px;">📈</span>
+                <span style="font-size:13px;color:var(--text-secondary);line-height:1.5;">Check <strong style="color:var(--text-primary)">Analytics</strong> to see translation trends over time.</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="font-size:16px;margin-top:1px;">🔍</span>
+                <span style="font-size:13px;color:var(--text-secondary);line-height:1.5;">Use the search bar in the Dictionary to quickly find any word.</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="font-size:16px;margin-top:1px;">🌏</span>
+                <span style="font-size:13px;color:var(--text-secondary);line-height:1.5;">Visit the <strong style="color:var(--text-primary)">Translator</strong> from the sidebar to test translations live.</span>
+              </li>
+            </ul>
+          </div>
+
+        </div><!-- /.lower-grid -->
+      </div><!-- /#view-dashboard -->
+
+      <!-- =========== VIEW: WORDS (DICTIONARY) =========== -->
+      <div id="view-words" style="display:none;">
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Dictionary</div>
+              <div class="card-subtitle">All English ↔ Reang word pairs</div>
+            </div>
+            <button class="btn-primary" style="width:auto;padding:8px 16px;font-size:13px;" onclick="showView('dashboard')">
+              + Add Word
+            </button>
+          </div>
+
+          <div class="search-bar">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search words…" onkeyup="searchWords()" />
+          </div>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>English</th>
+                  <th>Reang</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="wordsTable"></tbody>
+            </table>
+          </div>
+
+          <div id="pagination" class="pagination"></div>
+        </div>
+      </div><!-- /#view-words -->
+
+      <!-- =========== VIEW: ANALYTICS =========== -->
+      <div id="view-analytics" style="display:none;">
+        <div class="chart-card" style="margin-bottom:20px;">
+          <div class="chart-card-header">
+            <div>
+              <div class="card-title">Translation Activity</div>
+              <div class="card-subtitle">Full trend history</div>
+            </div>
+          </div>
+          <div class="chart-wrapper" style="height:300px;">
+            <canvas id="chart2"></canvas>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-icon purple">📊</div>
+            <div class="stat-body">
+              <div class="stat-value" id="a-translations">—</div>
+              <div class="stat-label">Total Translations</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">📖</div>
+            <div class="stat-body">
+              <div class="stat-value" id="a-words">—</div>
+              <div class="stat-label">Dictionary Size</div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /#view-analytics -->
+
+    </div><!-- /.content -->
+  </main><!-- /.main -->
+</div><!-- /.dashboard -->
+
+<!-- ===== EDIT MODAL ===== -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-title">Edit Word Pair</div>
+    <input type="hidden" id="editId" />
+    <div class="form-group">
+      <label class="form-label" for="editEnglish">English</label>
+      <input type="text" id="editEnglish" placeholder="English word" />
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="editReang">Reang</label>
+      <input type="text" id="editReang" placeholder="Reang word" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='admin.js') }}"></script>
+</body>
+</html>
