@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Reang Translator — Admin Dashboard" />
-  <title>Admin Dashboard — Reang Translator</title>
+  <meta name="description" content="Reang Translator — Contributor Dashboard" />
+  <title>Contributor Dashboard — Reang Translator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}" />
@@ -21,7 +21,7 @@
       <div class="logo-icon">🌏</div>
       <div class="logo-text">
         Reang
-        <span>Admin Panel</span>
+        <span>Contributor Panel</span>
       </div>
     </div>
 
@@ -41,18 +41,6 @@
           </svg>
           Dictionary
         </li>
-        <li id="nav-pending" onclick="showView('pending')">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-          </svg>
-          Pending
-        </li>
-        <li id="nav-analytics" onclick="showView('analytics')">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
-            <line x1="6" y1="20" x2="6" y2="14"/>
-          </svg>
-          Analytics
         </li>
       </ul>
 
@@ -80,8 +68,8 @@
       <div class="sidebar-user">
         <div class="user-avatar">{{ current_user.username[0]|upper if current_user else 'A' }}</div>
         <div class="user-info">
-          <div class="user-name">{{ current_user.username if current_user else 'Admin' }}</div>
-          <div class="user-role">Super Admin</div>
+          <div class="user-name">{{ current_user.username if current_user else 'User' }}</div>
+          <div class="user-role">Contributor</div>
         </div>
       </div>
     </div>
@@ -136,18 +124,7 @@
           </div>
         </div>
 
-        <!-- Chart -->
-        <div class="chart-card">
-          <div class="chart-card-header">
-            <div>
-              <div class="card-title">Translation Activity</div>
-              <div class="card-subtitle">Last 7 days</div>
-            </div>
-          </div>
-          <div class="chart-wrapper">
-            <canvas id="chart"></canvas>
-          </div>
-        </div>
+        <!-- Chart removed -->
 
         <!-- Lower Grid -->
         <div class="lower-grid">
@@ -246,58 +223,7 @@
         </div>
       </div><!-- /#view-words -->
 
-      <!-- =========== VIEW: PENDING =========== -->
-      <div id="view-pending" style="display:none;">
-        <div class="card" style="margin-bottom:0;">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Pending Approvals</div>
-              <div class="card-subtitle">Review incoming submissions from users</div>
-            </div>
-          </div>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th><th>English</th><th>Reang</th><th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="pendingTable"></tbody>
-            </table>
-          </div>
-        </div>
-      </div><!-- /#view-pending -->
-
-      <!-- =========== VIEW: ANALYTICS =========== -->
-      <div id="view-analytics" style="display:none;">
-        <div class="chart-card" style="margin-bottom:20px;">
-          <div class="chart-card-header">
-            <div>
-              <div class="card-title">Translation Activity</div>
-              <div class="card-subtitle">Full trend history</div>
-            </div>
-          </div>
-          <div class="chart-wrapper" style="height:300px;">
-            <canvas id="chart2"></canvas>
-          </div>
-        </div>
-        <div class="stats">
-          <div class="stat-card">
-            <div class="stat-icon purple">📊</div>
-            <div class="stat-body">
-              <div class="stat-value" id="a-translations">—</div>
-              <div class="stat-label">Total Translations</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon green">📖</div>
-            <div class="stat-body">
-              <div class="stat-value" id="a-words">—</div>
-              <div class="stat-label">Dictionary Size</div>
-            </div>
-          </div>
-        </div>
-      </div><!-- /#view-analytics -->
+      <!-- Analytics removed -->
 
     </div><!-- /.content -->
   </main><!-- /.main -->
@@ -323,6 +249,6 @@
   </div>
 </div>
 
-<script src="{{ url_for('static', filename='admin.js') }}"></script>
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
 </body>
 </html>

@@ -1,13 +1,17 @@
 from flask import Blueprint, render_template, jsonify
 from models.analytics import Analytics
 from models.word import Word
+from services.decorators import admin_required
+
 admin = Blueprint('admin', __name__)
 
 @admin.route('/admin')
+@admin_required
 def admin_page():
     return render_template('admin.html')
 
 @admin.route('/admin/stats')
+@admin_required
 def stats():
     analytics = Analytics.query.first()
 
@@ -19,6 +23,7 @@ def stats():
     })
     
 @admin.route('/admin/chart')
+@admin_required
 def chart_data():
     return jsonify({
         "labels": ["Mon", "Tue", "Wed", "Thu", "Fri"],

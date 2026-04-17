@@ -13,6 +13,22 @@
 
   <div class="container">
 
+    {% if current_user %}
+    <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 15px; position: relative;">
+      <div style="background: var(--glass-strong); padding: 8px 16px; border-radius: 100px; font-size: 13px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px);">
+        <span style="color: var(--text-primary);">Hi, <strong>{{ current_user.username }}</strong></span>
+        <span style="color: var(--text-muted);">|</span>
+        {% if current_user.role == 'admin' %}
+        <a href="{{ url_for('admin.admin_page') }}" style="color: var(--text-secondary); text-decoration: none;">Admin</a>
+        {% else %}
+        <a href="{{ url_for('main.dashboard') }}" style="color: var(--text-secondary); text-decoration: none;">Dashboard</a>
+        {% endif %}
+        <span style="color: var(--text-muted);">|</span>
+        <a href="{{ url_for('auth.logout') }}" style="color: var(--accent-light); text-decoration: none;">Logout</a>
+      </div>
+    </div>
+    {% endif %}
+
     <!-- Header -->
     <header class="header">
       <div class="logo-badge">
@@ -74,7 +90,7 @@
 
     <!-- Footer -->
     <footer class="page-footer">
-      <p>Built with ❤️ for the Reang community &nbsp;·&nbsp; <a href="/admin">Admin Panel</a></p>
+      <p>Built with ❤️ for the Reang community</p>
     </footer>
 
   </div>

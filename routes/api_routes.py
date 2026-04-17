@@ -1,8 +1,9 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, g
 from models.word import Word
 from models.analytics import Analytics
 from extensions import db
 import re
+from services.decorators import api_login_required, api_admin_required
 
 api = Blueprint('api', __name__)
 
@@ -10,18 +11,22 @@ def clean_text(text):
     return re.sub(r'[^\w\s]', '', text.lower()).strip()
 
 @api.route("/add-word", methods=["POST"])
+@api_login_required
 def add_word():
     data = request.get_json()
-
     clean_english = clean_text(data["english"])
 
     existing = Word.query.filter_by(english=clean_english).first()
     if existing:
         return jsonify({"error": "Word already exists"}), 400
 
+    is_approved = True if getattr(g, 'user', None) and g.user.role == 'admin' else False
+
     word = Word(
         english=clean_english,
-        reang=data["reang"]
+        reang=data["reang"],
+        user_id=g.user.id if getattr(g, 'user', None) else None,
+        is_approved=is_approved
     )
 
     db.session.add(word)
@@ -45,7 +50,7 @@ def translate_sentence():
         # Try longest phrase match first (greedy)
         for length in range(len(tokens) - i, 0, -1):
             phrase = " ".join(tokens[i:i + length])
-            result = Word.query.filter_by(english=phrase).first()
+            result = Word.query.filter_by(english=phrase, is_approved=True).first()
             if result:
                 translated.append(result.reang)
                 i += length
@@ -65,8 +70,6 @@ def translate_sentence():
     analytics.total_translations += 1
     db.session.commit()
 
-    print("Translation count:", analytics.total_translations)
-
     return jsonify({
         "translated": " ".join(translated)
     })
@@ -75,8 +78,14 @@ def translate_sentence():
 def get_words():
     page = request.args.get('page', 1, type=int)
     search = request.args.get('search', '', type=str)
+    owner = request.args.get('owner', '', type=str)
 
     query = Word.query
+
+    if owner == 'me' and getattr(g, 'user', None):
+        query = query.filter_by(user_id=g.user.id)
+    elif owner == 'pending' and getattr(g, 'user', None) and g.user.role == 'admin':
+        query = query.filter_by(is_approved=False)
 
     if search:
         query = query.filter(Word.english.ilike(f"%{search}%"))
@@ -85,22 +94,22 @@ def get_words():
 
     return jsonify({
         "words": [
-            {
-                "id": w.id,
-                "english": w.english,
-                "reang": w.reang
-            } for w in pagination.items
+            w.to_dict() for w in pagination.items
         ],
         "total_pages": pagination.pages,
         "current_page": pagination.page
     })
     
 @api.route('/delete-word/<int:id>', methods=["DELETE"])
+@api_login_required
 def delete_word(id):
     word = Word.query.get(id)
 
     if not word:
         return jsonify({"error": "Not found"}), 404
+
+    if getattr(g, 'user', None) and g.user.role != 'admin' and word.user_id != g.user.id:
+        return jsonify({"error": "Unauthorized"}), 403
 
     db.session.delete(word)
     db.session.commit()
@@ -108,6 +117,7 @@ def delete_word(id):
     return jsonify({"message": "Deleted"})
 
 @api.route('/update-word/<int:id>', methods=["PUT"])
+@api_login_required
 def update_word(id):
     data = request.get_json()
 
@@ -116,9 +126,36 @@ def update_word(id):
     if not word:
         return jsonify({"error": "Not found"}), 404
 
+    if getattr(g, 'user', None) and g.user.role != 'admin' and word.user_id != g.user.id:
+        return jsonify({"error": "Unauthorized"}), 403
+
     word.english = data["english"]
     word.reang = data["reang"]
 
     db.session.commit()
 
     return jsonify({"message": "Updated"})
+
+@api.route('/approve-word/<int:id>', methods=["POST"])
+@api_admin_required
+def approve_word(id):
+    word = Word.query.get(id)
+    if not word:
+        return jsonify({"error": "Not found"}), 404
+        
+    word.is_approved = True
+    db.session.commit()
+    
+    return jsonify({"message": "Approved"})
+
+@api.route('/reject-word/<int:id>', methods=["POST"])
+@api_admin_required
+def reject_word(id):
+    word = Word.query.get(id)
+    if not word:
+        return jsonify({"error": "Not found"}), 404
+        
+    db.session.delete(word)
+    db.session.commit()
+    
+    return jsonify({"message": "Rejected"})

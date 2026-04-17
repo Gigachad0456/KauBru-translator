@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Reang Translator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <style>
+    .auth-input {
+      width: 100%;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      background: var(--glass-strong);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      box-sizing: border-box;
+    }
+    .auth-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .auth-link {
+      font-size: 13px;
+      color: var(--accent-light);
+      text-decoration: none;
+      font-weight: 500;
+      float: right;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+    .auth-link:hover {
+      text-decoration: underline;
+    }
+    .form-group { width: 100%; }
+    .flash-messages { margin-bottom: 20px; width: 100%; }
+    .flash-error { color: #d32f2f; background: #ffebee; border-left: 4px solid #d32f2f; padding: 10px; border-radius: 4px; font-size: 14px; margin-bottom: 10px; font-weight: 500;}
+    .flash-success { color: #2e7d32; background: #e8f5e9; border-left: 4px solid #2e7d32; padding: 10px; border-radius: 4px; font-size: 14px; margin-bottom: 10px; font-weight: 500;}
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="header">
+      <div class="logo-badge">
+        <span class="dot"></span> Reang Security
+      </div>
+      <h1>Welcome Back</h1>
+      <p class="subtitle">Log in to manage the dictionary</p>
+    </header>
+
+    <div class="card" style="max-width: 400px; width: 100%; padding-bottom: 24px;">
+      
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form action="{{ url_for('auth.login') }}" method="POST">
+        <div class="form-group">
+          <label class="select-label" for="username">Username</label>
+          <input type="text" id="username" name="username" class="auth-input" placeholder="Enter username" required />
+        </div>
+        
+        <div class="form-group">
+          <label class="select-label" for="password">Password</label>
+          <input type="password" id="password" name="password" class="auth-input" placeholder="Enter password" required />
+        </div>
+        
+        <a href="{{ url_for('auth.forgot_password') }}" class="auth-link">Forgot password?</a>
+
+        <button type="submit" id="translate-btn" style="margin-bottom: 15px;">
+          <span class="btn-text">Login</span>
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 15px; font-size: 13px;">
+        <span style="color: var(--text-muted);">Don't have an account?</span> 
+        <a href="{{ url_for('auth.signup') }}" style="color: var(--accent-light); font-weight: 500; text-decoration: none;">Sign up</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
