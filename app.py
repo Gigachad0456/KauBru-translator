@@ -33,12 +33,14 @@ def inject_current_user():
     return {"current_user": getattr(g, "user", None)}
 
 with app.app_context():
+    db.drop_all()
     db.create_all()
 
     # init analytics
     if not Analytics.query.first():
         db.session.add(Analytics())
         db.session.commit()
+        
 
 if __name__ == "__main__":
     app.run(debug=False)
