@@ -7,31 +7,24 @@
 
 /* ===== CSS Variables ===== */
 :root {
-  --bg-from: #0f0c29;
-  --bg-via: #302b63;
-  --bg-to: #24243e;
+  --bg-from: #f5f7ff;
+  --bg-via: #eef1ff;
+  --bg-to: #e6ebff;
 
-  --accent: #7c6af7;
-  --accent-light: #a594f9;
-  --accent-glow: rgba(124, 106, 247, 0.35);
+  --accent: #6c63ff;
+  --accent-light: #8f88ff;
+  --accent-glow: rgba(108, 99, 255, 0.25);
 
-  --glass-bg: rgba(255, 255, 255, 0.06);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-hover: rgba(255, 255, 255, 0.1);
-  --glass-strong: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-hover: rgba(255, 255, 255, 0.75);
+  --glass-strong: rgba(255, 255, 255, 0.7);
 
-  --text-primary: #f0eeff;
-  --text-secondary: rgba(240, 238, 255, 0.6);
-  --text-muted: rgba(240, 238, 255, 0.35);
+  --text-primary: #1a1a2e;
+  --text-secondary: rgba(26, 26, 46, 0.7);
+  --text-muted: rgba(26, 26, 46, 0.4);
 
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
-
-  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  --shadow-glow: 0 0 40px rgba(124, 106, 247, 0.2);
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 /* ===== Reset & Base ===== */
@@ -57,6 +50,7 @@ body {
   padding: 24px;
   position: relative;
   overflow-x: hidden;
+  background-attachment: fixed;
 }
 
 /* ===== Animated Background Orbs ===== */
@@ -72,20 +66,13 @@ body::after {
 }
 
 body::before {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, #7c6af7, #a855f7);
-  top: -100px;
-  left: -100px;
+  background: radial-gradient(circle, #8f88ff, #c4c0ff);
+  opacity: 0.25;
 }
 
 body::after {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, #06b6d4, #3b82f6);
-  bottom: -80px;
-  right: -80px;
-  animation-delay: -4s;
+  background: radial-gradient(circle, #67e8f9, #93c5fd);
+  opacity: 0.25;
 }
 
 @keyframes orb-float {
@@ -145,16 +132,18 @@ body::after {
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.1;
-  background: linear-gradient(135deg, #fff 30%, var(--accent-light) 100%);
+  
+  background: linear-gradient(135deg, #1a1a2e 30%, var(--accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
   margin-bottom: 10px;
 }
 
 .subtitle {
   font-size: 15px;
-  color: var(--text-secondary);
+  color: rgba(26, 26, 46, 0.65);
   font-weight: 400;
   letter-spacing: 0.2px;
 }
