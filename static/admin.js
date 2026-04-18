@@ -18,6 +18,9 @@ function showView(name) {
     if (nav) nav.classList.toggle('active', v === name);
   });
 
+  const sidebar = document.querySelector('.sidebar');
+  if (sidebar) sidebar.classList.remove('open');
+
   // Topbar labels
   const titles = {
     dashboard: ['Dashboard',  'Overview of your translation data'],

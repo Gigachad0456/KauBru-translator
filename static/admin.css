@@ -736,8 +736,19 @@ button.small.delete {
 /* =============================
    RESPONSIVE
    ============================= */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 4px;
+}
+
 @media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); }
+  .sidebar { transform: translateX(-100%); box-shadow: 4px 0 24px rgba(0,0,0,0.5); }
+  .sidebar.open { transform: translateX(0); }
+  .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
   .main { margin-left: 0; }
   .content { padding: 16px; }
   .stats { grid-template-columns: 1fr 1fr; }

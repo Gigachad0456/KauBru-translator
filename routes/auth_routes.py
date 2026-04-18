@@ -63,7 +63,7 @@ def login():
             if user.role == 'admin':
                 return redirect(url_for("admin.admin_page"))
             else:
-                return redirect(url_for("main.dashboard"))
+                return redirect(url_for("main.index"))
         
         flash("Invalid username or password", "error")
     
